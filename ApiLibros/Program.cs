@@ -4,7 +4,7 @@ using ApiLibros.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<ControlLibroContext>(options =>
+builder.Services.AddDbContext<PrestamosContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("SQL")));
 
 // Add services to the container.
