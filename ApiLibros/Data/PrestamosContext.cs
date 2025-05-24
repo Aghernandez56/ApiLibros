@@ -3,10 +3,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ApiLibros.Data
 {
-    public class PrestamosContext
+    public class PrestamosContext:DbContext
     {
         public PrestamosContext(DbContextOptions<PrestamosContext> options) : base(options) { }
 
-        public DbSet<Prestamos> Prestamoss { get; set; }
+        public DbSet<Prestamos> Prestamos { get; set; }
     }
 }
