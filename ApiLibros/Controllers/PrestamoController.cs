@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace ApiLibros.Controllers
 {
     [ApiController]
-  
+    [Authorize]
     [Route("api/Prestamos")]
     public class PrestamoController : ControllerBase
     {
