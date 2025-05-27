@@ -9,7 +9,7 @@
 
 
 <div class="align-content-center">
-<form action="/Insertar" method="post">
+<form action="/InsertarPrestamo" method="post">
     <div class="form-group mb-3">
         <label for="UsuarioId">ID Usuario:</label>
             <input type="number" name="UsuarioId" class="form-control" placeholder="Ej: 1" required />
@@ -19,6 +19,11 @@
         <label for="LibroId">ID Libro:</label>
             <input type="number" name="LibroId" class="form-control" placeholder="Ej: 1" required />
     </div>
+
+        <div class="form-group mb-3">
+            <label for="FechaPrestamo">Fecha de Prestamo:</label>
+            <input type="date" id="FechaPrestamo" name="FechaPrestamo" class="form-control" required />
+        </div>
 
         <div class="form-group mb-3">
             <label for="FechaDevolucion"> Fecha de Devolución:</label>
@@ -43,3 +48,16 @@
     </div>
 }
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD
+        const fechaPrestamoInput = document.getElementById('FechaPrestamo');
+
+        // Establecer la fecha de hoy en el campo
+        fechaPrestamoInput.value = today;
+
+        // Deshabilitar el campo para que no se pueda cambiar
+        fechaPrestamoInput.disabled = true;
+    });
+</script>

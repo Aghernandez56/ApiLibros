@@ -78,14 +78,14 @@ namespace ConsumirApiLibros.Services
             return prestamos ?? new List<Prestamos>();
         }
 
-        public async Task<Prestamos> InsertarPrestamos(Prestamos prestamo) 
+        public async Task<bool>  InsertarPrestamos(Prestamos prestamo) 
         {
             var content = new StringContent(JsonSerializer.Serialize(prestamo),Encoding.UTF8,"application/json");
 
             var response = await _client.PostAsync("api/Prestamos", content);
 
             if (!response.IsSuccessStatusCode)
-                return new Prestamos();
+                return false;
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
@@ -96,10 +96,10 @@ namespace ConsumirApiLibros.Services
 
             if (prestamoInsertado == null)
             {
-                return new Prestamos();
+                return false;
             }
 
-            return prestamoInsertado;
+            return true;
         }
     }
 }

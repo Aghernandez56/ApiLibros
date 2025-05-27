@@ -54,7 +54,7 @@ namespace ConsumirApiLibros.Controllers
             {
                 var response = await _prestamoService.InsertarPrestamos(prestamo);
 
-                if (response != null)
+                if (response==null)
                 {
                     var prestamos = await _prestamoService.GetPrestamosAsync();
                     TempData["Success"] = "¡Gracias! Su comentario fue enviado correctamente.";

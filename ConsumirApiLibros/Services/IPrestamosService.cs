@@ -6,6 +6,6 @@ namespace ApiLibros.Services
     {
         Task<bool> LoginAsync(string username, string password);
         Task<List<Prestamos>> GetPrestamosAsync();
-        Task<Prestamos> InsertarPrestamos(Prestamos prestamo);
+        Task<bool> InsertarPrestamos(Prestamos prestamo)
     }
 }
