@@ -34,6 +34,10 @@
         <button type="submit" class="btn btn-primary">Insertar</button>
     </div>
 </form>
+    <a href="/Prestamos"
+       class="btn btn-primary @(ViewContext.RouteData.Values["action"]?.ToString() == "Prestamos" ? "active" : "")">
+        Volver
+    </a>
 
 @* @if (TempData["Success"] != null)
 {
@@ -46,8 +50,8 @@
     <div class="alert alert-danger text-center mt-3">
         @TempData["Error"]
     </div>
-}
-</div> *@
+    } *@
+</div> 
 
    
 

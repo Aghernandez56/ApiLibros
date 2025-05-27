@@ -8,5 +8,7 @@ namespace ApiLibros.Services
         Task<List<Prestamos>> GetPrestamosAsync();
         Task<bool> InsertarPrestamos(Prestamos prestamo);
         Task<bool> EliminarPrestamo(int id);
+        Task<Prestamos?> GetPrestamoIdAsync(int id);
+        Task<bool> ActualizarPrestamo(Prestamos prestamo);
     }
 }

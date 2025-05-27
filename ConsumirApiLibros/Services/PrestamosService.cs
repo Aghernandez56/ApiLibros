@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ConsumirApiLibros.Services
 {
-    public class PrestamosService :IPrestamosService
+    public class PrestamosService : IPrestamosService
     {
         //private readonly HttpClient _httpClient;
         private string _token = string.Empty;
@@ -58,7 +58,7 @@ namespace ConsumirApiLibros.Services
 
         public async Task<List<Prestamos>> GetPrestamosAsync()
         {
-          
+
             var response = await _client.GetAsync("api/Prestamos/Todos");
 
             if (!response.IsSuccessStatusCode)
@@ -70,10 +70,10 @@ namespace ConsumirApiLibros.Services
             return prestamos ?? new List<Prestamos>();
         }
 
-        public async Task<bool>  InsertarPrestamos(Prestamos prestamo) 
+        public async Task<bool> InsertarPrestamos(Prestamos prestamo)
         {
 
-            var content = new StringContent(JsonSerializer.Serialize(prestamo),Encoding.UTF8,"application/json");
+            var content = new StringContent(JsonSerializer.Serialize(prestamo), Encoding.UTF8, "application/json");
 
             var response = await _client.PostAsync("api/Prestamos", content);
 
@@ -96,7 +96,36 @@ namespace ConsumirApiLibros.Services
             return true;
         }
 
-        public async Task<bool> EliminarPrestamo(int id) 
+
+        public async Task<Prestamos?> GetPrestamoIdAsync(int id)
+        {
+
+            var response = await _client.GetAsync($"api/Prestamos/prestamo/{id}");
+
+            if (!response.IsSuccessStatusCode)
+                return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+
+            var lista = JsonSerializer.Deserialize<List<Prestamos>>(content, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            var prestamo = lista?.FirstOrDefault();
+
+            return prestamo;
+        }
+
+
+        public async Task<bool> ActualizarPrestamo(Prestamos prestamo) 
+        {
+            var content = new StringContent(JsonSerializer.Serialize(prestamo.Estado), Encoding.UTF8, "application/json");
+            var response = await _client.PatchAsync($"api/Prestamos/Prestamo?prestamoid={prestamo.IdPrestamo}", content);
+
+            if (!response.IsSuccessStatusCode)
+                return false;
+
+            return true;
+        }
+
+        public async Task<bool> EliminarPrestamo(int id)
         {
             var response = await _client.DeleteAsync($"api/Prestamos/{id}");
 

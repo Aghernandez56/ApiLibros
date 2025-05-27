@@ -1,0 +1,40 @@
+﻿@model ConsumirApiLibros.Models.Prestamos
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<h2>Detalles del Préstamo</h2>
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Préstamo ID: @Model.IdPrestamo</h5>
+
+        <p class="card-text"><strong>Libro:</strong> @Model.LibroId</p>
+        <p class="card-text"><strong>Usuario:</strong> @Model.UsuarioId</p>
+        <p class="card-text"><strong>Fecha Préstamo:</strong> @Model.FechaPrestamo?.ToString("dd/MM/yyyy")</p>
+        <p class="card-text"><strong>Fecha Devolución:</strong> @Model.FechaDevolucion?.ToString("dd/MM/yyyy")</p>
+
+        <form action="/ActualizarPrestamo" method="post">
+            <input type="hidden" name="IdPrestamo" value="@Model.IdPrestamo" />
+
+            <label><strong>Estado:</strong></label>
+            <select asp-for="Estado" class="form-control mb-2">
+                <option value="Prestado">Prestado</option>
+                <option value="Devuelto">Devuelto</option>
+                <option value="Retrasado">Retrasado</option>
+            </select>
+
+            <button type="submit" class="btn btn-success">Guardar</button>
+        </form>
+        <br />
+        <form action="/EliminarPrestamo" method="post" onsubmit="return confirm('¿Estás seguro de eliminar este préstamo?');">
+            <input type="hidden" name="id" value="@Model.IdPrestamo" />
+            <button type="submit" class="btn btn-danger">Eliminar</button>
+        </form>
+
+        <a href="/Prestamos" class="btn btn-secondary mt-3">Volver</a>
+    </div>
+</div>

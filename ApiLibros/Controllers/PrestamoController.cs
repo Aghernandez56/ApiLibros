@@ -34,6 +34,25 @@ namespace ApiLibros.Controllers
             }
         }
 
+        [HttpGet("prestamo/{idprestamo}")]
+        public async Task<ActionResult<List<Prestamos>>> GetIdPrestamo(int idprestamo)
+        {
+            try
+            {
+                var prestamo = await _context.Prestamos.FromSqlRaw("EXEC VerPrestamoPorId  @IdPrestamo", new SqlParameter("@IdPrestamo", idprestamo))
+                .ToListAsync();
+
+                if (prestamo == null)
+                    return NotFound();
+
+                return Ok(prestamo);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error en el servidor: {ex.Message}");
+            }
+        }
+
         [HttpGet("usuario/{usuarioid}")]
         public async Task<ActionResult<List<Prestamos>>> GetPrestamosId(int usuarioid)
         {
@@ -87,7 +106,7 @@ namespace ApiLibros.Controllers
         }
 
         [HttpDelete("{prestamoid}")]
-        public async Task<IActionResult> DeleteNovio( int prestamoid)
+        public async Task<IActionResult> DeletePrestamo( int prestamoid)
         {
             try
             {
