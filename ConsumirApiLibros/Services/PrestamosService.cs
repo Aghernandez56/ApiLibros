@@ -33,15 +33,9 @@ namespace ConsumirApiLibros.Services
             var json = JsonSerializer.Serialize(loginData);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
-            };
-
-            using var client = new HttpClient(handler);
 
             // Asegúrate de usar la URL completa
-            var response = await client.PostAsync("https://localhost:7069/api/auth/login", content);
+            var response = await _client.PostAsync("/api/auth/login", content);
 
             if (response.IsSuccessStatusCode)
             {
@@ -49,6 +43,12 @@ namespace ConsumirApiLibros.Services
                 var auth = JsonSerializer.Deserialize<AuthResponse>(responseBody, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
 
                 _token = auth?.Token ?? string.Empty;
+
+                // Establece el header con el token
+                if (!string.IsNullOrEmpty(_token))
+                {
+                    _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
+                }
 
                 return !string.IsNullOrEmpty(_token);
             }
@@ -58,16 +58,8 @@ namespace ConsumirApiLibros.Services
 
         public async Task<List<Prestamos>> GetPrestamosAsync()
         {
-            var handler = new HttpClientHandler
-            {
-                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
-            };
-
-            using var client = new HttpClient(handler);
-            client.BaseAddress = new Uri("https://localhost:7069/");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _token);
-
-            var response = await client.GetAsync("api/Prestamos/Todos");
+          
+            var response = await _client.GetAsync("api/Prestamos/Todos");
 
             if (!response.IsSuccessStatusCode)
                 return new List<Prestamos>();
@@ -80,6 +72,7 @@ namespace ConsumirApiLibros.Services
 
         public async Task<bool>  InsertarPrestamos(Prestamos prestamo) 
         {
+
             var content = new StringContent(JsonSerializer.Serialize(prestamo),Encoding.UTF8,"application/json");
 
             var response = await _client.PostAsync("api/Prestamos", content);
@@ -89,15 +82,28 @@ namespace ConsumirApiLibros.Services
 
             var responseContent = await response.Content.ReadAsStringAsync();
 
-            var prestamoInsertado =  JsonSerializer.Deserialize<Prestamos>(responseContent, new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            });
+            //var prestamoInsertado = JsonSerializer.Deserialize<Prestamos>(responseContent, new JsonSerializerOptions
+            //{
+            //    PropertyNameCaseInsensitive = true
+            //});
 
-            if (prestamoInsertado == null)
-            {
+
+            //if (prestamoInsertado == null)
+            //{
+            //    return false;
+            //}
+
+            return true;
+        }
+
+        public async Task<bool> EliminarPrestamo(int id) 
+        {
+            var response = await _client.DeleteAsync($"api/Prestamos/{id}");
+
+            if (!response.IsSuccessStatusCode)
                 return false;
-            }
+
+            var responseContent = await response.Content.ReadAsStringAsync();
 
             return true;
         }

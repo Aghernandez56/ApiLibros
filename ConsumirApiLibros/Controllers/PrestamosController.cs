@@ -52,26 +52,55 @@ namespace ConsumirApiLibros.Controllers
         {
             try
             {
+                var success = await _prestamoService.LoginAsync("admin", "123");
+
                 var response = await _prestamoService.InsertarPrestamos(prestamo);
+                
 
-                if (response==null)
+                if (response)
                 {
-                    var prestamos = await _prestamoService.GetPrestamosAsync();
-                    TempData["Success"] = "¡Gracias! Su comentario fue enviado correctamente.";
+                    
+                    TempData["ShowAlert"] = "¡El prestamo se añadió correctamente!";
 
-                    return View("~/Views/Prestamos/Insertar.cshtml", prestamos);
+                    return Insertar();
 
                 }
                 else
                 {
-                    
-                    return View("~/Views/Prestamos/Prestamos.cshtml");
+                    TempData["ShowAlert"] = $"No se pudo registrar el préstamo.";
+                    return Insertar();
                 }
             }
             catch (Exception ex)
             {
-                TempData["Error"] = $"Ocurrió un error al procesar su solicitud. Se ha notificado a soporte, {ex}";
-                return View("~/Views/Prestamos/Prestamos.cshtml");
+                TempData["ShowAlert"] = $"Ocurrió un error al procesar su solicitud. {ex}";
+                return Insertar();
+            }
+        }
+
+        [HttpDelete ("EliminarPrestamo")]
+
+        public async Task<IActionResult> EliminarPrestamo(int id) 
+        {
+            try
+            {
+                var success = await _prestamoService.LoginAsync("admin", "123");
+
+                var response = await _prestamoService.EliminarPrestamo(id);
+
+                if (!response) 
+                {
+                    TempData["ShowAlert"] = "Ocurrió un error al eliminar el prestamo :(";
+                    return Insertar();
+                }
+                TempData["ShowAlert"] = "¡El prestamo se Eliminó correctamente!";
+                return Insertar();
+
+            }
+            catch (Exception ex)
+            {
+                TempData["ShowAlert"] = $"Ocurrió un error al procesar su solicitud. {ex}";
+                return Insertar();
             }
         }
     }

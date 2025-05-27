@@ -50,7 +50,7 @@ namespace ApiLibros.Controllers
         }
 
         [HttpPatch("Prestamo")]
-        public async Task<ActionResult<List<Prestamos>>> UpdateNovio( int prestamoid, [FromBody] string estado)
+        public async Task<ActionResult<List<Prestamos>>> UpdatePrestamo( int prestamoid, [FromBody] string estado)
         {
             try
             {
@@ -74,8 +74,8 @@ namespace ApiLibros.Controllers
             try
             {
                 var response = await _context.Database.ExecuteSqlRawAsync(
-                  "Exec InsertarPrestamo @p0, @p1, @p2, @p3",
-                   prestamo?.UsuarioId, prestamo?.LibroId, prestamo?.FechaDevolucion, prestamo?.Estado
+                  "Exec InsertarPrestamo @p0, @p1, @p2",
+                   prestamo?.UsuarioId, prestamo?.LibroId, prestamo?.FechaDevolucion
                 );
 
                 return Ok(response);
