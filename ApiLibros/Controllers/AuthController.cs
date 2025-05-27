@@ -24,7 +24,7 @@ namespace ApiLibros.Controllers
             {
                 // 🔑 Leer clave del archivo de configuración
                 var secretKey = _configuration["JwtSettings:SecretKey"];
-                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey));
+                var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(secretKey ?? ""));
                 var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
                 // 📛 Claims del usuario

@@ -1,0 +1,76 @@
+﻿@model List<ConsumirApiLibros.Models.Prestamos>
+@{
+
+}
+
+@* @model List<Prestamos>
+ *@
+<h2>Lista de Préstamos</h2>
+
+
+    @* <a class="btn-primary" @(ViewContext.RouteData.Values["action"]?.ToString() == "Insertar" ? "active" : "")" href="/Insertar">Insertar</a>
+ *@
+<button class="btn btn-primary me-2" onclick="abrirInsertar()">Insertar Prestamo </button>
+
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Usuario ID</th>
+            <th>Libro ID</th>
+            <th>Fecha Préstamo</th>
+            <th>Fecha Devolución</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var prestamo in Model)
+            {
+                <tr>
+                    <td>@prestamo.IdPrestamo</td>
+                    <td>@prestamo.UsuarioId</td>
+                    <td>@prestamo.LibroId</td>
+                    <td>@prestamo.FechaPrestamo?.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <b style="
+                            color: @(prestamo.Estado == "Retrasado" && prestamo.FechaDevolucion > DateTime.Now
+                            ? "red"
+                            : prestamo.FechaDevolucion < DateTime.Now
+                                ? "green"
+                                : "black")">
+                            @prestamo.FechaDevolucion?.ToString("dd/MM/yyyy")
+                        </b>
+                    </td>
+
+
+                    <td>
+                        <b style="
+                        color: @(prestamo.Estado == "Retrasado" ? "red" :
+                        prestamo.Estado == "Devuelto" ? "green" :
+                        prestamo.Estado == "Prestado" ? "blue" : "black")">
+                        @prestamo.Estado
+                        </b>
+                    </td>
+                    
+
+                    <td class="acciones-col">
+                        <a asp-action="Update" asp-route-id="@prestamo.IdPrestamo" class="btn btn-sm btn-info">Editar</a>
+                        <a asp-action="Delete" asp-route-id="@prestamo.IdPrestamo" class="btn btn-sm btn-danger">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr><td colspan="6" class="text-center">No hay préstamos disponibles.</td></tr>
+        }
+    </tbody>
+</table>
+
+
+
