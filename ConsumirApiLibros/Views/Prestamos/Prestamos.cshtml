@@ -8,9 +8,11 @@
 <h2>Lista de Préstamos</h2>
 
 
-    @* <a class="btn-primary" @(ViewContext.RouteData.Values["action"]?.ToString() == "Insertar" ? "active" : "")" href="/Insertar">Insertar</a>
- *@
-<button class="btn btn-primary me-2" onclick="abrirInsertar()">Insertar Prestamo </button>
+<a href="/Insertar"
+   class="btn btn-primary @(ViewContext.RouteData.Values["action"]?.ToString() == "Insertar" ? "active" : "")">
+    Insertar
+</a>
+@* <button class="btn btn-primary me-2" onclick="abrirInsertar()">Insertar Prestamo </button> *@
 
 
 
